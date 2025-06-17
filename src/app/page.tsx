@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
+import TaskList from "@/components/TaskList";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
           </button>
         </Link>
       </div>
+      <TaskList />
     </main>
   );
 }

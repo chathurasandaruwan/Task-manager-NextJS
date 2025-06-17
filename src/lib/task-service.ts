@@ -34,3 +34,12 @@ export const createTask = async (taskData: CreateTaskInput): Promise<Task> => {
 
   return newTask;
 };
+
+// Get all tasks
+export const getTasks = async (): Promise<Task[]> => {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 300))
+
+  const tasks = getTasksFromStorage()
+  return tasks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+}
