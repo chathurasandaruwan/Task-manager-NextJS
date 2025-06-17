@@ -1,9 +1,9 @@
 "use client";
-import { Task } from "@/app/lib/types";
+import { Task } from "@/lib/types";
 import { Calendar } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
-import { createTask } from "@/app/lib/task-service";
+import { createTask } from "@/lib/task-service";
 
 interface TaskFormProps {
   task?: Task;
