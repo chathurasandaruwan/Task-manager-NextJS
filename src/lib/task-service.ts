@@ -37,35 +37,60 @@ export const createTask = async (taskData: CreateTaskInput): Promise<Task> => {
 // function to save tasks to localStorage
 const saveTasksToStorage = (tasks: Task[]): void => {
   if (typeof window === "undefined") {
-    return
+    return;
   }
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
-}
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+};
 // Get all tasks
 export const getTasks = async (): Promise<Task[]> => {
   // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
-  const tasks = getTasksFromStorage()
-  return tasks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-}
+  const tasks = getTasksFromStorage();
+  return tasks.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+};
 
 // Get a task by ID
 export const getTaskById = async (id: string): Promise<Task | null> => {
   // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 200))
+  await new Promise((resolve) => setTimeout(resolve, 200));
 
-  const tasks = getTasksFromStorage()
-  return tasks.find((task) => task.id === id) || null
-}
+  const tasks = getTasksFromStorage();
+  return tasks.find((task) => task.id === id) || null;
+};
 // Delete a task
 export const deleteTask = async (id: string): Promise<void> => {
   // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  const tasks = getTasksFromStorage()
-  const updatedTasks = tasks.filter((task) => task.id !== id)
+  const tasks = getTasksFromStorage();
+  const updatedTasks = tasks.filter((task) => task.id !== id);
 
-  saveTasksToStorage(updatedTasks)
-}
+  saveTasksToStorage(updatedTasks);
+};
+
+// Update an existing task
+export const updateTask = async (taskData: Task): Promise<Task> => {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  const tasks = getTasksFromStorage();
+  const taskIndex = tasks.findIndex((task) => task.id === taskData.id);
+
+  if (taskIndex === -1) {
+    throw new Error(`Task with ID ${taskData.id} not found`);
+  }
+
+  const updatedTask: Task = {
+    ...taskData,
+    updatedAt: new Date().toISOString(),
+  };
+
+  tasks[taskIndex] = updatedTask;
+  saveTasksToStorage(tasks);
+
+  return updatedTask;
+};
