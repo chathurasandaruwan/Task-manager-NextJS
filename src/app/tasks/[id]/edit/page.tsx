@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
 import TaskForm from "@/components/TaskForm";
 import { Task } from "@/lib/types";
 import { getTaskById } from "@/lib/task-service";
@@ -12,10 +12,11 @@ export default function EditTask({
 }: {
   params: Promise<{ id: string }>;
 }) {
+    //get id from params
   const { id } = use(params);
   const [task, setTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true);
-
+  //fetch task by id
   useEffect(() => {
     const fetchTask = async () => {
       const taskData = await getTaskById(id);
@@ -25,7 +26,7 @@ export default function EditTask({
 
     fetchTask();
   }, [id]);
-
+//set loading
   if (loading) {
     return (
       <div className="container mx-auto p-4 max-w-2xl">
@@ -35,7 +36,7 @@ export default function EditTask({
       </div>
     );
   }
-
+//if task not found
   if (!task) {
     return (
       <div className="container mx-auto p-4 max-w-2xl">
@@ -47,12 +48,14 @@ export default function EditTask({
   }
   return (
     <main className="container mx-auto p-4 max-w-2xl">
-      <div className="mb-6">
-        <Link href={`/tasks/${id}`}>
-          <button className="text-gray-600 hover:text-gray-800 flex items-center gap-2 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Task
-          </button>
+      <div className="flex items-center justify-between mb-8">
+        <Link href="/" className="flex items-center">
+          <Home className="mr-2" />
+          <span>Home</span>
+        </Link>
+        <Link href={`/tasks/${task.id}`} className="flex items-center">
+          <ArrowLeft className="mr-2" />
+          <span>Back</span>
         </Link>
       </div>
 
