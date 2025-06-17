@@ -43,3 +43,12 @@ export const getTasks = async (): Promise<Task[]> => {
   const tasks = getTasksFromStorage()
   return tasks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 }
+
+// Get a task by ID
+export const getTaskById = async (id: string): Promise<Task | null> => {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 200))
+
+  const tasks = getTasksFromStorage()
+  return tasks.find((task) => task.id === id) || null
+}
