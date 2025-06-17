@@ -4,7 +4,7 @@ import { useEffect, useState, use } from "react";
 import type { Task } from "@/lib/types";
 import { deleteTask, getTaskById } from "@/lib/task-service";
 import Link from "next/link";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 
 export default function TaskDetail({
@@ -12,7 +12,7 @@ export default function TaskDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-    const router = useRouter()
+  const router = useRouter();
   //get id from params
   const { id } = use(params);
   const [task, setTask] = useState<Task | null>(null);
@@ -76,8 +76,8 @@ export default function TaskDetail({
   //handle delete
   const handleDelete = async (id: string) => {
     if (task) {
-      await deleteTask(task.id)
-      router.push("/")
+      await deleteTask(task.id);
+      router.push("/");
     }
   };
 
