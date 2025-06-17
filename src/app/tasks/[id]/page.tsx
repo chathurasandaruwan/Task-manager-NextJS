@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState, use  } from "react";
+import { useEffect, useState, use } from "react";
 import type { Task } from "@/lib/types";
 import { getTaskById } from "@/lib/task-service";
 import Link from "next/link";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 
-export default function TaskDetail({ params }: { params: Promise<{ id: string }> }) {
+export default function TaskDetail({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   //get id from params
   const { id } = use(params);
   const [task, setTask] = useState<Task | null>(null);

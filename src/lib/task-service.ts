@@ -30,11 +30,18 @@ export const createTask = async (taskData: CreateTaskInput): Promise<Task> => {
 
   tasks.push(newTask);
   // Save tasks to localStorage
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  saveTasksToStorage(tasks);
 
   return newTask;
 };
+// function to save tasks to localStorage
+const saveTasksToStorage = (tasks: Task[]): void => {
+  if (typeof window === "undefined") {
+    return
+  }
 
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+}
 // Get all tasks
 export const getTasks = async (): Promise<Task[]> => {
   // Simulate API delay
@@ -51,4 +58,14 @@ export const getTaskById = async (id: string): Promise<Task | null> => {
 
   const tasks = getTasksFromStorage()
   return tasks.find((task) => task.id === id) || null
+}
+// Delete a task
+export const deleteTask = async (id: string): Promise<void> => {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 500))
+
+  const tasks = getTasksFromStorage()
+  const updatedTasks = tasks.filter((task) => task.id !== id)
+
+  saveTasksToStorage(updatedTasks)
 }
