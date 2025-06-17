@@ -18,9 +18,21 @@ export default function TaskForm({ task }: TaskFormProps) {
       ? new Date(task.dueDate).toISOString().split("T")[0]
       : "",
   });
-  //set errors
+  // errors state
   const [errors, setErrors] = useState<Record<string, string>>({});
+  //validate form
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+    //validate title
+    if (!formData.title.trim()) {
+      newErrors.title = "Title is required"
+    } else if (formData.title.length > 100) {
+      newErrors.title = "Title must be less than 100 characters"
+    }
 
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
   //set form data on change
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -38,6 +50,10 @@ export default function TaskForm({ task }: TaskFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    //validate form
+    if (!validateForm()) {
+      return
+    }
     setIsSubmitting(true);
     const taskData = {
       title: formData.title.trim(),
@@ -54,6 +70,7 @@ export default function TaskForm({ task }: TaskFormProps) {
       console.log(taskData);
       
     }
+    setIsSubmitting(false);
   };
 
   return (
