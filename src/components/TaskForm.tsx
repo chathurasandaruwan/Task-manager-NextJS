@@ -1,14 +1,15 @@
 "use client";
 import { Task } from "@/app/lib/types";
-import { log } from "console";
-import { Calendar } from "lucide-react"
+import { Calendar } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation"
 
 interface TaskFormProps {
   task?: Task;
 }
 
 export default function TaskForm({ task }: TaskFormProps) {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: task?.title || "",
@@ -22,17 +23,17 @@ export default function TaskForm({ task }: TaskFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   //validate form
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
     //validate title
     if (!formData.title.trim()) {
-      newErrors.title = "Title is required"
+      newErrors.title = "Title is required";
     } else if (formData.title.length > 100) {
-      newErrors.title = "Title must be less than 100 characters"
+      newErrors.title = "Title must be less than 100 characters";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   //set form data on change
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -52,7 +53,7 @@ export default function TaskForm({ task }: TaskFormProps) {
     e.preventDefault();
     //validate form
     if (!validateForm()) {
-      return
+      return;
     }
     setIsSubmitting(true);
     const taskData = {
@@ -64,11 +65,10 @@ export default function TaskForm({ task }: TaskFormProps) {
 
     if (task) {
       // Update existing task
-      
     } else {
       // Create new task
       console.log(taskData);
-      
+      router.push(`/tasks/${1}`)
     }
     setIsSubmitting(false);
   };
@@ -165,9 +165,18 @@ export default function TaskForm({ task }: TaskFormProps) {
 
       <div className="flex justify-end gap-4">
         <button
+          type="button"
+          onClick={() =>
+            task ? router.push(`/tasks/${task.id}`) : router.push("/")
+          }
+          className="px-4 py-2 border bg-gray-300 rounded-md hover:bg-black hover:text-white hover:cursor-pointer border-2 border-black"
+        >
+          Cancel
+        </button>
+        <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-black text-white rounded-md border-2 hover:bg-gray-300 hover:text-black hover:cursor-pointer"
         >
           {isSubmitting ? "Saving..." : task ? "Update Task" : "Create Task"}
         </button>
