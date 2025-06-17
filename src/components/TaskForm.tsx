@@ -3,7 +3,7 @@ import { Task } from "@/lib/types";
 import { Calendar } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
-import { createTask } from "@/lib/task-service";
+import { createTask, updateTask } from "@/lib/task-service";
 
 interface TaskFormProps {
   task?: Task;
@@ -66,6 +66,8 @@ export default function TaskForm({ task }: TaskFormProps) {
 
     if (task) {
       // Update existing task
+      await updateTask({ ...task, ...taskData });
+        router.push(`/tasks/${task.id}`)
     } else {
       // Create new task
       const newTask = await createTask(taskData);
