@@ -7,3 +7,11 @@ export interface Task {
   createdAt: string
   updatedAt: string
 }
+
+
+export interface CreateTaskInput {
+  title: string
+  description?: string
+  status: "todo" | "in-progress" | "completed"
+  dueDate?: Date | null
+}

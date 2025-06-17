@@ -3,6 +3,7 @@ import { Task } from "@/app/lib/types";
 import { Calendar } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
+import { createTask } from "@/app/lib/task-service";
 
 interface TaskFormProps {
   task?: Task;
@@ -67,8 +68,8 @@ export default function TaskForm({ task }: TaskFormProps) {
       // Update existing task
     } else {
       // Create new task
-      console.log(taskData);
-      router.push(`/tasks/${1}`)
+      const newTask = await createTask(taskData);
+      router.push(`/tasks/${newTask.id}`);
     }
     setIsSubmitting(false);
   };
