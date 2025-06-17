@@ -54,7 +54,7 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   return (
     <Link href={`/tasks/${task.id}`}>
-      <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
+      <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer mb-4">
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
           <span

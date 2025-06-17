@@ -56,12 +56,12 @@ export default function TaskList() {
       </div>
     );
   }
-    const tabs = [
+  const tabs = [
     { id: "all", label: "All", count: tasks.length },
     { id: "todo", label: "To Do", count: todoTasks.length },
     { id: "in-progress", label: "In Progress", count: inProgressTasks.length },
     { id: "completed", label: "Completed", count: completedTasks.length },
-  ]
+  ];
   //get filtered tasks
   const filteredTasks = getFilteredTasks();
 
