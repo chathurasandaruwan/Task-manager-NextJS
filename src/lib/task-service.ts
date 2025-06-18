@@ -1,56 +1,42 @@
-import { v4 as uuidv4 } from "uuid";
 import type { CreateTaskInput, Task } from "./types";
+import axios, { type AxiosError } from "axios"
 
-const STORAGE_KEY = "tasks";
+const API_BASE_URL = "http://localhost:8000/Task"
 
-//function to get tasks from localStorage
-const getTasksFromStorage = (): Task[] => {
-  if (typeof window === "undefined") {
-    return [];
-  }
+// Create axios instance with default configuration
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  timeout: 10000, // 10 second timeout
+})
 
-  const tasksJson = localStorage.getItem(STORAGE_KEY);
-  return tasksJson ? JSON.parse(tasksJson) : [];
-};
 // Create a new task
-export const createTask = async (taskData: CreateTaskInput): Promise<Task> => {
-  // Get tasks from localStorage
-  const tasks = getTasksFromStorage();
+export const createTask = async (taskData: CreateTaskInput): Promise<Task | undefined> => {
+   try {
+    const payload = {
+      title: taskData.title,
+      description: taskData.description || "",
+      status: taskData.status,
+      dueDate: taskData.dueDate,
+    }
 
-  const now = new Date().toISOString();
-  const newTask: Task = {
-    id: uuidv4(),
-    title: taskData.title,
-    description: taskData.description || "",
-    status: taskData.status,
-    dueDate: taskData.dueDate ? taskData.dueDate.toISOString() : null,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  tasks.push(newTask);
-  // Save tasks to localStorage
-  saveTasksToStorage(tasks);
-
-  return newTask;
-};
-// function to save tasks to localStorage
-const saveTasksToStorage = (tasks: Task[]): void => {
-  if (typeof window === "undefined") {
-    return;
+    const response = await api.post("/create", payload)
+    return response.data
+  } catch (error) {
+    console.log(error);
   }
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 };
 // Get all tasks
-export const getTasks = async (): Promise<Task[]> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  const tasks = getTasksFromStorage();
-  return tasks.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+export const getTasks = async (): Promise<Task[] | undefined> => {
+   try {
+    const response = await api.get("/all")
+    return Array.isArray(response.data) ? response.data : []
+  } catch (error) {
+    console.log(error);
+    
+  }
 };
 
 // Get a task by ID
