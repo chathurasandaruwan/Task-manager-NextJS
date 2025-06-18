@@ -15,7 +15,7 @@ export default function TaskDetail({
   const router = useRouter();
   //get id from params
   const { id } = use(params);
-  const [task, setTask] = useState<Task | null>(null);
+  const [task, setTask] = useState<Task | null | undefined>(null);
   const [loading, setLoading] = useState(true);
   //fetch task by id
   useEffect(() => {

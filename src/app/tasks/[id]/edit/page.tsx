@@ -12,9 +12,9 @@ export default function EditTask({
 }: {
   params: Promise<{ id: string }>;
 }) {
-    //get id from params
+  //get id from params
   const { id } = use(params);
-  const [task, setTask] = useState<Task | null>(null);
+  const [task, setTask] = useState<Task | null | undefined>(null);
   const [loading, setLoading] = useState(true);
   //fetch task by id
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function EditTask({
 
     fetchTask();
   }, [id]);
-//set loading
+  //set loading
   if (loading) {
     return (
       <div className="container mx-auto p-4 max-w-2xl">
@@ -36,7 +36,7 @@ export default function EditTask({
       </div>
     );
   }
-//if task not found
+  //if task not found
   if (!task) {
     return (
       <div className="container mx-auto p-4 max-w-2xl">
