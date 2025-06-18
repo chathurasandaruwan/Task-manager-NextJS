@@ -40,12 +40,16 @@ export const getTasks = async (): Promise<Task[] | undefined> => {
 };
 
 // Get a task by ID
-export const getTaskById = async (id: string): Promise<Task | null> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 200));
-
-  const tasks = getTasksFromStorage();
-  return tasks.find((task) => task.id === id) || null;
+export const getTaskById = async (id: string): Promise<Task | undefined | null> => {
+  try {
+    const response = await api.get(`/get/${id}`)
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      return null
+    }
+    console.log(error);
+  }
 };
 // Delete a task
 export const deleteTask = async (id: string): Promise<void> => {
