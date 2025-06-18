@@ -15,14 +15,7 @@ const api = axios.create({
 // Create a new task
 export const createTask = async (taskData: CreateTaskInput): Promise<Task | undefined> => {
    try {
-    const payload = {
-      title: taskData.title,
-      description: taskData.description || "",
-      status: taskData.status,
-      dueDate: taskData.dueDate,
-    }
-
-    const response = await api.post("/create", payload)
+    const response = await api.post("/create", taskData)
     return response.data
   } catch (error) {
     console.log(error);
@@ -53,34 +46,15 @@ export const getTaskById = async (id: string): Promise<Task | undefined | null> 
 };
 // Delete a task
 export const deleteTask = async (id: string): Promise<void> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const tasks = getTasksFromStorage();
-  const updatedTasks = tasks.filter((task) => task.id !== id);
-
-  saveTasksToStorage(updatedTasks);
+  try {
+    await api.delete(`/${id}`)
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // Update an existing task
 export const updateTask = async (taskData: Task): Promise<Task> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const tasks = getTasksFromStorage();
-  const taskIndex = tasks.findIndex((task) => task.id === taskData.id);
-
-  if (taskIndex === -1) {
-    throw new Error(`Task with ID ${taskData.id} not found`);
-  }
-
-  const updatedTask: Task = {
-    ...taskData,
-    updatedAt: new Date().toISOString(),
-  };
-
-  tasks[taskIndex] = updatedTask;
-  saveTasksToStorage(tasks);
-
-  return updatedTask;
+  const response = await api.put(`/${taskData.id}`, taskData)
+  return response.data
 };
